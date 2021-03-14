@@ -59,8 +59,10 @@ if ! grep -qF "$(ssh-keygen -y -f ~/.ssh/id_rsa)" ~/.ssh/authorized_keys; then
 fi
 chmod og-wx ~/.ssh/authorized_keys
 
-echo "Enabling nested-virtualization"
-sudo ./node.sh
+#echo "Enabling nested-virtualization"
+#sudo ./node.sh
 
-echo "Deploying KUD project"
+sudo ln -s /usr/bin/kubectl /usr/local/bin/kubectl
+
+echo "Deploying OVN4NFV project"
 ./installer.sh | tee kud_installer.log

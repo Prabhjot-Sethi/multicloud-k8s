@@ -45,7 +45,7 @@
       ignore_errors: True
 
     - name: apply nfn operator label
-      command: "/usr/local/bin/kubectl label node {{ item }} nfnType=operator --overwrite"
+      command: "/usr/local/bin/kubectl label node --all nfnType=operator --overwrite"
       with_inventory_hostnames: ovn-central
 
     - name: Apply NFN operator, operator roles, CRD's and ovn4nfv Daemonset

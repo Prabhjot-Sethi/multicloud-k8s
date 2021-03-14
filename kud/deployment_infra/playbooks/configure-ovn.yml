@@ -21,7 +21,7 @@
         dest: /etc/apt/trusted.gpg.d/wand.gpg
     - name: add WAND Debian Repo
       apt_repository:
-        repo: "deb https://packages.wand.net.nz {{ ansible_lsb.codename }} ovs-2.10"
+        repo: "deb https://packages.wand.net.nz bionic ovs-2.10"
         state: present
     - name: install OpenVSwitch packages
       package:

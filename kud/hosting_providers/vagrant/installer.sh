@@ -44,7 +44,7 @@ function _install_pip {
         sudo -E pip install --no-cache-dir --upgrade pip
     else
         sudo apt-get install -y python-dev
-        curl -sL https://bootstrap.pypa.io/2.7/get-pip.py | sudo python
+        curl -sL https://bootstrap.pypa.io/pip/2.7/get-pip.py | sudo python
     fi
 }
 
@@ -102,7 +102,6 @@ function _set_environment_file {
     echo "export OVN_CENTRAL_ADDRESS=$(get_ovn_central_address)" | sudo tee --append /etc/environment
     echo "export KUBE_CONFIG_DIR=/opt/kubeconfig" | sudo tee --append /etc/environment
     echo "export CSAR_DIR=/opt/csar" | sudo tee --append /etc/environment
-    echo "export ANSIBLE_CONFIG=${ANSIBLE_CONFIG}" | sudo tee --append /etc/environment
 }
 
 # install_k8s() - Install Kubernetes using kubespray tool
@@ -156,10 +155,10 @@ function install_addons {
     echo "Installing Kubernetes AddOns"
     _install_ansible
     sudo ansible-galaxy install $verbose -r $kud_infra_folder/galaxy-requirements.yml --ignore-errors
-    ansible-playbook $verbose -i $kud_inventory -e "base_dest=$HOME" $kud_playbooks/configure-kud.yml | sudo tee $log_folder/setup-kud.log
+    #ansible-playbook $verbose -i $kud_inventory -e "base_dest=$HOME" $kud_playbooks/configure-kud.yml | sudo tee $log_folder/setup-kud.log
     # The order of KUD_ADDONS is important: some plugins (sriov, qat)
     # require nfd to be enabled.
-    for addon in ${KUD_ADDONS:-topology-manager virtlet ovn4nfv nfd sriov qat optane cmk}; do
+    for addon in ${KUD_ADDONS:-ovn4nfv}; do
         echo "Deploying $addon using configure-$addon.yml playbook.."
         ansible-playbook $verbose -i $kud_inventory -e "base_dest=$HOME" $kud_playbooks/configure-${addon}.yml | sudo tee $log_folder/setup-${addon}.log
     done
@@ -260,10 +259,11 @@ echo "Removing ppa for jonathonf/python-3.6"
 sudo ls /etc/apt/sources.list.d/ || true
 sudo find /etc/apt/sources.list.d -maxdepth 1 -name '*jonathonf*' -delete || true
 sudo apt-get update
-install_k8s
+#install_k8s
+_install_ansible
 _set_environment_file
 install_addons
-if ${KUD_PLUGIN_ENABLED:-false}; then
-    install_plugin
-fi
-_print_kubernetes_info
+#if ${KUD_PLUGIN_ENABLED:-false}; then
+#    install_plugin
+#fi
+#_print_kubernetes_info

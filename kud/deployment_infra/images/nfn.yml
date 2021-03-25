@@ -408,7 +408,7 @@ spec:
       serviceAccountName: k8s-nfn-sa
       containers:
         - name: nfn-operator
-          image: integratedcloudnative/ovn4nfv-k8s-plugin:0.9.0
+          image: psethi/ovn4nfv-k8s-plugin:0.9.0
           command: ["/usr/local/bin/entrypoint", "operator"]
           imagePullPolicy: IfNotPresent
           ports:
@@ -474,7 +474,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: ovn4nfv
-        image: integratedcloudnative/ovn4nfv-k8s-plugin:0.9.0
+        image: psethi/ovn4nfv-k8s-plugin:0.9.0
         imagePullPolicy: IfNotPresent
         command: ["/usr/local/bin/entrypoint", "cni"]
         resources:
@@ -534,7 +534,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: nfn-agent
-        image: integratedcloudnative/ovn4nfv-k8s-plugin:0.9.0
+        image: psethi/ovn4nfv-k8s-plugin:0.9.0
         imagePullPolicy: IfNotPresent
         command: ["/usr/local/bin/entrypoint", "agent"]
         resources:
